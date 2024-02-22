@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="GaussianPro: 3D Gaussian Splatting with Progressive Propagation">
+  <meta name="keywords" content="Autonomous Driving, NeRF, multiple cameras">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GaussianPro: 3D Gaussian Splatting with Progressive Propagation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/lego.png">
+  <link rel="stylesheet" type="text/css" href="./static/css/test.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://kcheng1021.github.io/ucnerf.github.io/">
+            UC-NeRF
+          </a>
+          <a class="navbar-item" href="https://www.xxlong.site/Wonder3D/">
+            Wonder3D
+          </a>
+          <a class="navbar-item" href="https://github.com/YvanYin/Metric3D">
+            Metric3D
+          </a>
+          <a class="navbar-item" href="https://aim-uofa.github.io/FrozenRecon/">
+            FrozenRecon
+          </a>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">GaussianPro: 3D Gaussian Splatting with Progressive Propagation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://cklibra.github.io/">Kai Cheng*</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.xxlong.site/">Xiaoxiao Long*</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://silenkzyoung.github.io/KaizhiYang/">Kaizhi Yang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yoyo000.github.io/">Yao Yao</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yvanyin.net/">Wei Yin</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yuexinma.me/">Yuexin Ma</a><sup>5</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.cs.hku.hk/people/academic-staff/wenping">Wenping Wang</a><sup>6</sup>
+            </span>
+            <span class="author-block">
+              <a href="http://staff.ustc.edu.cn/~xjchen99/">Xuejin Chen</a><sup>1</sup>
+            </span>
+           <p>(* Equal Contribution)</p>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of Science and Technology of China,</span>
+            <span class="author-block"><sup>2</sup>The University of Hong Kong,</span>
+            <span class="author-block"><sup>3</sup>Nanjing University,</span>
+            <span class="author-block"><sup>4</sup>DJI Technology,</span>
+            <span class="author-block"><sup>5</sup>ShanghaiTech University</span>
+            <span class="author-block"><sup>6</sup>Texas A&M University,</span>
+
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="http://arxiv.org/abs/pending..."
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/kcheng1021/GaussianPro"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="hero teaser"> -->
+
+<!-- </section> -->
+
+  <!-- <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
+        free-viewpoint
+        portraits.
+      </h2>
+    </div>
+  </div> -->
+  <!-- <div class="image-container">
+    <div class="image-overlay"></div>
+    <img src="./static/images/zipdemo1.png" alt="Image 1" class="image image1">
+    <img src="./static/images/ucdemo1.png" alt="Image 2" class="image image2">
+  </div> -->
+<!-- </section> -->
+
+
+<!-- <section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- <div id="outer-container">
+  <div id="container">
+    <img id="image1" src="./static/images/ucdemo1.png" />
+    <div id="slider">
+      <div class="arrow-right">&#9654;</div>
+      <div class="arrow-left">&#9664;</div>
+    </div>
+    <img id="image2" src="./static/images/zipdemo1.png" />
+  </div>
+</div>
+<script src="./static/js/test.js"></script> -->
+
+<div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="container">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+          <source src="./static/videos/teaser.mp4"
+                  type="video/mp4">
+          </video>
+      </div>
+      </div>
+    </div>
+</div>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            The advent of 3D Gaussian Splatting (3DGS) has recently brought about a revolution in the field of neural rendering, facilitating high-quality renderings at real-time speed. However, 3DGS heavily depends on the initialized point cloud produced by Structure-from-Motion (SfM) techniques.
+            When tackling with large-scale scenes that unavoidably contain texture-less surfaces, the SfM techniques always fail to produce enough points in these surfaces and cannot provide good initialization for 3DGS. As a result, 3DGS suffers from difficult optimization and low-quality renderings.
+            In this paper, inspired by classical multi-view stereo (MVS) techniques, <strong>we propose GaussianPro, a novel method that applies a progressive propagation strategy to guide the densification of the 3D Gaussians.</strong> 
+            Compared to the simple split and clone strategies used in 3DGS, our method leverages the priors of the existing reconstructed geometries of the scene and patch matching techniques to produce new Gaussians with accurate positions and orientations.
+          </p>
+          <p>
+            Experiments on both large-scale and small-scale scenes validate the effectiveness of our method, where our method significantly surpasses 3DGS on the Waymo dataset, exhibiting an improvement of 1.15dB in terms of PSNR.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Motivation. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Motivation</h2>
+        <div class="content has-text-justified">
+        
+          <img src="./static/images/motivation.png">
+          <p>
+            The sparse SfM points and less-constrained densification strategies of 3DGS pose challenges in optimizing 3D Gaussians, particularly for textureless areas. 
+            3DGS generates incorrect Gaussians (blue circle) to be over-fitted on the training images, leading to a noticeable performance drop in novel view rendering with erroneous geometries.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Comparison</h2> 
+        <div class="container">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+           <source src="./static/videos/comparison_outdoor.mp4"
+                   type="video/mp4">
+          </video>
+      </div>
+          <div class="container">
+            <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+             <source src="./static/videos/comparison_indoor.mp4"
+                     type="video/mp4">
+            </video>
+        </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <h3 class="title is-3">More Results</h3>
+    </div>
+
+   <!--/ Re-rendering. -->
+
+   <p>
+    <strong style="color: blue";> 
+    Note that no prior used in our GaussianPro.
+    </strong>
+  </p>
+   <section class="hero is-light is-small">
+     <div class="hero-body">
+       <div class="container">
+           <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/scene100613.mp4"
+                    type="video/mp4">
+           </video>
+       </div>
+       <div class="container">
+        <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+          <source src="./static/videos/scene148697.mp4"
+                  type="video/mp4">
+        </video>
+    </div>
+    <div class="container">
+      <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+        <source src="./static/videos/scene164701.mp4"
+                type="video/mp4">
+      </video>
+      <br>
+      <p style="font-size: 16px;">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <b>Rendered Images</b>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <b>Rendered Depth</b> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <b>Rendered Normal</b></p>
+      <br>
+  </div>
+     </div>
+   </section>
+   <br>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <h3 class="title is-3">Gaussian Visualization</h3>
+    </div>
+
+   <p>
+    <strong style="color: black";> 
+      Please note that we did not perform any additional processing on the sky, 
+      but it is possible to separate the sky from the foreground by segmenting them as an independent layer during modeling.
+    </strong>
+  </p>
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+         <div class="video-container">
+           <video width="320" height="240" autoplay controls muted loop playsinline>
+             <source src="./static/videos/waymo_final.mp4" type="video/mp4">
+           </video>
+           <video width="320" height="240" autoplay controls muted loop playsinline>
+             <source src="./static/videos/waymo_baseline.mp4" type="video/mp4">
+           </video>
+         </div>
+         <div class="video-container">
+           <video width="320" height="240" autoplay controls muted loop playsinline>
+             <source src="./static/videos/room_final.mp4" type="video/mp4">
+           </video>
+           <video width="320" height="240" autoplay controls muted loop playsinline>
+             <source src="./static/videos/room_baseline.mp4" type="video/mp4">
+           </video>
+         </div>
+
+         <br>
+         <p style="font-size: 16px;">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <b>Ours GaussianPro (left)</b>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <b>3DGS (right)</b></p>
+         <br>
+
+      </div>
+    </div>
+  </section>
+   <br>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <!--<pre><code>@misc{cheng2023ucnerf,
+  title     = {UC-NeRF: Neural Radiance Field for Under-Calibrated multi-view cameras in autonomous driving},
+  author    = {Kai Cheng and Xiaoxiao Long and Wei Yin and Jin Wang and Zhiqiang Wu and Yuexin Ma and Kaixuan Wang and Xiaozhi Chen and Xuejin Chen},
+  year      = {2023},
+  eprint={2311.16945},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}</code></pre>-->
+    <pre><code>@article{cheng2023gaussian,
+  title     = {GaussianPro: 3D Gaussian Splatting with Progressive Propagation},
+  author    = {Cheng, Kai and Long, Xiaoxiao and Yang, Kaizhi and Yao, Yao and Yin, Wei and Ma, Yuexin and Wang, Wenping and Chen, Xuejin},
+  journal   = {arXiv preprint arXiv:},
+  year      = {2024}
+}</code></pre>
+    <!--<pre><code>@article{kchenguc23,
+  author    = {Kai Cheng, Xiaoxiao Long, Wei Yin, Jin Wang, Zhiqiang Wu, Yuexin Ma, Kaixuan Wang, Xiaozhi Chen, Xuejin Chen},
+  title     = {UC-NeRF},
+  journal   = {arxiv},
+  year      = {2023},
+}</code></pre>-->
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
