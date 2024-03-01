@@ -42,6 +42,30 @@
   <script src="./static/js/index.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+  <style>
+    .video-container1 {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .video1 {
+      flex: 1 0 22%;
+      margin: 8px;
+    }
+    .divider {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: rgb(195, 192, 192);
+  }
+  .indented {
+  margin-top: 2em;
+  }
+  </style>
 </head>
 <body>
 
@@ -139,15 +163,6 @@
                       <i class="fas fa-file-pdf"></i>
                   </span>
                   <span>Arxiv</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="https://github.com/kcheng1021/GaussianPro/blob/main/figs/supplymentary_material.pdf"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Supplymentary Material</span>
                 </a>
               </span>
               <!-- Video Link. -->
@@ -275,17 +290,50 @@
 <script src="./static/js/test.js"></script> -->
 
 <div class="container is-max-desktop">
-
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <div class="container">
-          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/teaser.mp4"
-                  type="video/mp4">
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+         <!-- <div class="video-container">
+           <video width="160" height="120" autoplay controls muted loop playsinline>
+             <source src="./static/videos/jiaotang_final_demo.mp4" type="video/mp4">
+           </video>
+           <video width="160" height="120" autoplay controls muted loop playsinline>
+             <source src="./static/videos/jiaotang_demo.mp4" type="video/mp4">
+           </video>
+           <video width="160" height="120" autoplay controls muted loop playsinline>
+            <source src="./static/videos/gugong_final_demo.mp4" type="video/mp4">
           </video>
-      </div>
+          <video width="160" height="120" autoplay controls muted loop playsinline>
+            <source src="./static/videos/gugong_demo.mp4" type="video/mp4">
+          </video>
+         </div> -->
+         <div class="video-container1">
+            <div class="video1">
+              <video autoplay controls muted loop playsinline>
+                <source src="./static/videos/jiaotang_demo.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video1">
+              <video autoplay controls muted loop playsinline>
+                <source src="./static/videos/gugong_demo.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video1">
+              <video autoplay controls muted loop playsinline>
+                <source src="./static/videos/jiaotang_final_demo.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video1">
+              <video autoplay controls muted loop playsinline>
+                <source src="./static/videos/gugong_final_demo.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="divider"></div>
+        </div>
+         <p style="font-size: 16px;">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <b>3DGS (left)</b>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <b>GaussianPro (right)</b></p>
       </div>
     </div>
+</section>    
 </div>
 
 <section class="section">
@@ -308,6 +356,21 @@
       </div>
     </div>
     <!--/ Abstract. -->
+
+    <br>
+    <div class="container is-max-desktop">
+    
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <div class="container">
+              <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/teaser.mp4"
+                      type="video/mp4">
+              </video>
+          </div>
+          </div>
+        </div>
+    </div>
 
     <!-- Motivation. -->
     <div class="columns is-centered has-text-centered">
